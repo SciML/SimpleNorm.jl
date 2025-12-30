@@ -1,6 +1,10 @@
 using SimpleNorm
 using Test
 
+@testset "Explicit Imports" begin
+    include("explicit_imports_test.jl")
+end
+
 @testset "SimpleNorm.jl" begin
     @testset "Vector norms" begin
         # Test vectors
