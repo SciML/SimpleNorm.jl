@@ -4,6 +4,7 @@ authors = ["Chris Rackauckas <accounts@chrisrackauckas.com> and contributors"]
 version = "0.1.0"
 
 [compat]
+ExplicitImports = "1"
 julia = "1.6"
 
 [extras]
