@@ -39,8 +39,8 @@ end
         @test norm([1.0, 0.0, 3.0, 0.0, 5.0], 0) == 3.0
 
         # p-norm for various p
-        @test norm(v1, 3) ≈ (3^3 + 4^3)^(1/3)
-        @test norm(v2, 4) ≈ (1 + 16 + 81 + 256)^(1/4)
+        @test norm(v1, 3) ≈ (3^3 + 4^3)^(1 / 3)
+        @test norm(v2, 4) ≈ (1 + 16 + 81 + 256)^(1 / 4)
 
         # Complex vectors
         @test norm(v4, 1) ≈ sqrt(5) + 5
@@ -49,12 +49,16 @@ end
     end
 
     @testset "Matrix norms" begin
-        A = [1.0 2.0 3.0;
-             4.0 5.0 6.0]
+        A = [
+            1.0 2.0 3.0;
+            4.0 5.0 6.0
+        ]
 
-        B = [1.0 -2.0;
-             3.0 4.0;
-             -5.0 6.0]
+        B = [
+            1.0 -2.0;
+            3.0 4.0;
+            -5.0 6.0
+        ]
 
         # 1-norm (maximum column sum)
         @test norm(A, 1) ≈ 9.0  # max(1+4, 2+5, 3+6)
@@ -100,13 +104,13 @@ end
         @test isnan(norm(v_nan, Inf))
 
         # Large values (overflow prevention)
-        large_val = 1e308
+        large_val = 1.0e308
         v_large = [large_val, large_val]
         @test norm(v_large, 2) ≈ sqrt(2) * large_val
         @test !isinf(norm(v_large, 2))
 
         # Small values (underflow prevention)
-        small_val = 1e-308
+        small_val = 1.0e-308
         v_small = [small_val, small_val]
         @test norm(v_small, 2) ≈ sqrt(2) * small_val
         @test norm(v_small, 2) > 0
