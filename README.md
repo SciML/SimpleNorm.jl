@@ -19,7 +19,7 @@ This package provides pure Julia implementations of common norm functions:
 - `norm(A, Inf)` - Maximum absolute row sum
 - `norm(A, "fro")` or `norm(A, :fro)` - Frobenius norm
 
-Note: The spectral norm (`norm(A, 2)`) is not implemented as it requires singular value decomposition.
+Note: The spectral norm (`norm(A, 2)`) is not implemented, as it requires singular value decomposition.
 
 ## Installation
 
@@ -41,9 +41,9 @@ norm(v, Inf)  # 4.0 (infinity norm)
 
 # Matrix norms
 A = [1 2 3; 4 5 6]
-norm(A, 1)    # 9.0 (max column sum)
-norm(A, Inf)  # 15.0 (max row sum)
-norm(A, "fro") # Frobenius norm
+norm(A, 1)     # 9.0 (max column sum)
+norm(A, Inf)   # 15.0 (max row sum)
+norm(A, "fro") # 9.539392014169456 (Frobenius norm)
 ```
 
 ## Why SimpleNorm.jl?
