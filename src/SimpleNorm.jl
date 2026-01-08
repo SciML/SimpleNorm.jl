@@ -12,15 +12,33 @@ For vectors and arrays, the p-norm is defined as:
 - `p = 2`: Euclidean norm (default)
 - `p = Inf`: maximum absolute value
 - `p = -Inf`: minimum absolute value
+- `p = 0`: count of non-zero elements
 - `p > 0`: (Σ|xᵢ|^p)^(1/p)
 
 For matrices, special norms are supported:
-- `p = 1`: maximum column sum
-- `p = Inf`: maximum row sum
+- `p = 1`: maximum absolute column sum
+- `p = Inf`: maximum absolute row sum
 - `p = "fro"` or `p = :fro`: Frobenius norm
-- `p = 2`: spectral norm (not implemented - would require SVD)
+- `p = 2`: spectral norm (not implemented, as it requires SVD)
 
-This implementation does not depend on BLAS or LAPACK.
+This implementation does not depend on BLAS or LAPACK and uses scaling
+algorithms to prevent overflow and underflow in floating-point computations.
+
+# Examples
+
+```julia
+# Vector norms
+v = [3.0, 4.0]
+norm(v)       # 5.0
+norm(v, 1)    # 7.0
+norm(v, Inf)  # 4.0
+
+# Matrix norms
+A = [1 2 3; 4 5 6]
+norm(A, 1)     # 9.0
+norm(A, Inf)   # 15.0
+norm(A, :fro)  # 9.539392014169456
+```
 """
 norm(x) = norm(x, 2)
 
