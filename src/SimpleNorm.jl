@@ -193,7 +193,7 @@ function normp(x, p::Real)
         sump += abs(xi / scale)^p
     end
 
-    return scale * sump^(1/p)
+    return scale * sump^(1 / p)
 end
 
 # Matrix norm implementations
