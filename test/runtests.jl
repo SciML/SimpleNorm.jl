@@ -1,6 +1,15 @@
 using SimpleNorm
 using Test
 
+const GROUP = get(ENV, "GROUP", "All")
+
+if GROUP == "QA"
+    @testset "QA" begin
+        include("qa/qa.jl")
+    end
+end
+
+if GROUP == "All" || GROUP == "Core"
 @testset "Explicit Imports" begin
     include("explicit_imports_test.jl")
 end
@@ -146,4 +155,5 @@ end
         @test norm(Float32[3, 4]) ≈ 5.0
         @test norm(BigFloat[3, 4]) ≈ 5.0
     end
+end
 end
