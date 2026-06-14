@@ -1,12 +1,15 @@
-using SimpleNorm
-using Aqua
-using JET
-using Test
+using SafeTestsets
 
-@testset "Aqua" begin
+@safetestset "Aqua" begin
+    using SimpleNorm
+    using Aqua
+    using Test
     Aqua.test_all(SimpleNorm)
 end
 
-@testset "JET" begin
+@safetestset "JET" begin
+    using SimpleNorm
+    using JET
+    using Test
     JET.test_package(SimpleNorm; target_defined_modules = true)
 end
