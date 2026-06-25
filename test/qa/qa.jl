@@ -1,14 +1,4 @@
-using SimpleNorm
-using Aqua
+using SciMLTesting, SimpleNorm, Test
 using JET
-using ExplicitImports
-using SciMLTesting
 
-run_qa(
-    SimpleNorm;
-    Aqua = Aqua,
-    JET = JET,
-    jet = true,
-    ExplicitImports = ExplicitImports,
-    explicit_imports = true,
-)
+run_qa(SimpleNorm; explicit_imports = true)
