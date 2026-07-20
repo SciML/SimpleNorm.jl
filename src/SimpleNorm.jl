@@ -4,25 +4,47 @@ export norm
 
 """
     norm(x, p::Real=2)
+    norm(A::AbstractMatrix, p::Union{AbstractString, Symbol})
 
-Compute the p-norm of a vector or array.
+Compute a scalar norm using pure Julia implementations that do not depend on
+`LinearAlgebra`, BLAS, or LAPACK.
 
-For vectors and arrays, the p-norm is defined as:
-- `p = 1`: sum of absolute values
-- `p = 2`: Euclidean norm (default)
-- `p = Inf`: maximum absolute value
-- `p = -Inf`: minimum absolute value
-- `p = 0`: count of non-zero elements
-- `p > 0`: (Σ|xᵢ|^p)^(1/p)
+# Arguments
 
-For matrices, special norms are supported:
-- `p = 1`: maximum absolute column sum
-- `p = Inf`: maximum absolute row sum
-- `p = "fro"` or `p = :fro`: Frobenius norm
-- `p = 2`: spectral norm (not implemented, as it requires SVD)
+  - `x`: A number or array-like collection of numeric values.
+  - `A`: An `AbstractMatrix` for matrix-specific norms.
+  - `p`: The requested norm order. Defaults to `2`.
 
-This implementation does not depend on BLAS or LAPACK and uses scaling
-algorithms to prevent overflow and underflow in floating-point computations.
+# Supported Values
+
+For vectors and general arrays:
+
+  - `p = 1`: sum of absolute values.
+  - `p = 2`: Euclidean norm.
+  - `p = Inf`: maximum absolute value.
+  - `p = -Inf`: minimum absolute value.
+  - `p = 0`: count of non-zero elements.
+  - `p > 0`: scaled ``(sum(abs(x_i)^p))^(1/p)`` computation.
+
+For matrices:
+
+  - `p = 1`: maximum absolute column sum.
+  - `p = Inf`: maximum absolute row sum.
+  - `p = "fro"` or `p = :fro`: Frobenius norm.
+
+For numbers, all supported `p` values return `abs(x)`.
+
+# Errors
+
+Throws `ArgumentError` for unsupported negative vector orders, unsupported matrix
+orders, and unknown matrix norm strings or symbols. Matrix spectral norms
+(`p = 2`) are intentionally not implemented because they require singular value
+decomposition.
+
+# Notes
+
+The Euclidean, general positive-order, and Frobenius paths use scaling algorithms
+to reduce overflow and underflow in floating-point computations.
 
 # Examples
 

@@ -30,7 +30,7 @@ norm([3.0, 4.0], Inf)   # 4.0  (infinity norm)
 - `norm(x, 1)` — 1-norm (sum of absolute values)
 - `norm(x, Inf)` — infinity norm (maximum absolute value)
 - `norm(x, -Inf)` — minimum absolute value
-- `norm(x, p)` — p-norm for any `p ≥ 1`
+- `norm(x, p)` — scaled positive-order norm for any `p > 0`
 - `norm(x, 0)` — count of non-zero elements
 
 ### Matrix norms
