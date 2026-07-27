@@ -45,10 +45,10 @@ For numbers, all supported `p` values return `abs(x)`.
 
 `norm` consumes the public `AbstractArray` interface; custom arrays must support
 their usual public Base operations, including iteration, `isempty`, `eltype`,
-and scalar indexing. Matrix inputs must additionally support `size(A)` and
-two-dimensional scalar indexing `A[i, j]`. No SimpleNorm-specific subtype or
-method extension is required: define the normal `AbstractArray` interface and
-call `norm` on the resulting value.
+and scalar indexing. Matrix inputs must additionally provide axes and
+two-dimensional scalar indexing `A[i, j]` for values from those axes. No
+SimpleNorm-specific subtype or method extension is required: define the normal
+`AbstractArray` interface and call `norm` on the resulting value.
 
 # Throws
 
@@ -238,16 +238,15 @@ end
 # Matrix norm implementations
 
 function norm1_matrix(A::AbstractMatrix)
-    m, n = size(A)
-    if m == 0 || n == 0
+    if isempty(A)
         return float(abs(zero(eltype(A))))
     end
 
     # Maximum absolute column sum
     maxsum = zero(float(real(eltype(A))))
-    for j in 1:n
+    for j in axes(A, 2)
         colsum = zero(float(real(eltype(A))))
-        for i in 1:m
+        for i in axes(A, 1)
             colsum += abs(A[i, j])
         end
         maxsum = max(maxsum, colsum)
@@ -256,16 +255,15 @@ function norm1_matrix(A::AbstractMatrix)
 end
 
 function normInf_matrix(A::AbstractMatrix)
-    m, n = size(A)
-    if m == 0 || n == 0
+    if isempty(A)
         return float(abs(zero(eltype(A))))
     end
 
     # Maximum absolute row sum
     maxsum = zero(float(real(eltype(A))))
-    for i in 1:m
+    for i in axes(A, 1)
         rowsum = zero(float(real(eltype(A))))
-        for j in 1:n
+        for j in axes(A, 2)
             rowsum += abs(A[i, j])
         end
         maxsum = max(maxsum, rowsum)

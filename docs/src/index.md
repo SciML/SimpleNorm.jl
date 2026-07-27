@@ -32,7 +32,7 @@ julia> norm([3.0, 4.0], Inf)
 `norm` accepts ordinary arrays and custom `AbstractArray` implementations. A
 custom array must implement the public Base array operations used by its shape:
 iteration, `isempty`, `eltype`, and scalar indexing; matrices must additionally
-implement `size` and two-dimensional scalar indexing. There is no
+implement axes and two-dimensional scalar indexing over those axes. There is no
 SimpleNorm-specific abstract type to subtype or method to extend. Define the
 normal Base array interface, then call `norm`.
 

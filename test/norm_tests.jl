@@ -156,7 +156,9 @@ end
     end
 
     Base.size(x::WrappedMatrix) = size(x.data)
-    Base.getindex(x::WrappedMatrix, i::Int, j::Int) = x.data[i, j]
+    Base.axes(::WrappedMatrix) = (0:1, -1:0)
+    Base.getindex(x::WrappedMatrix, i::Int) = x.data[i]
+    Base.getindex(x::WrappedMatrix, i::Int, j::Int) = x.data[i + 1, j + 2]
 
     v = WrappedVector([3.0, 4.0])
     A = WrappedMatrix([1.0 2.0; 3.0 4.0])
