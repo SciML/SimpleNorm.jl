@@ -3,21 +3,28 @@ module SimpleNorm
 export norm
 
 """
-    norm(x, p::Real=2)
-    norm(A::AbstractMatrix, p::Union{AbstractString, Symbol})
+    norm(x[, p]) -> Real
+    norm(A::AbstractMatrix, p::Union{AbstractString, Symbol}) -> Real
 
-Compute a scalar norm using pure Julia implementations that do not depend on
-`LinearAlgebra`, BLAS, or LAPACK.
+Compute a scalar norm using pure-Julia implementations that do not depend on
+`LinearAlgebra`, BLAS, or LAPACK. `norm(x)` is equivalent to `norm(x, 2)`.
 
 # Arguments
 
-  - `x`: A number or array-like collection of numeric values.
-  - `A`: An `AbstractMatrix` for matrix-specific norms.
-  - `p`: The requested norm order. Defaults to `2`.
+  - `x::Union{Number, AbstractArray}`: A number or array of numeric values.
+  - `A::AbstractMatrix`: A matrix for matrix-specific norms.
+  - `p::Real`: The requested numeric norm order. It defaults to `2` when omitted.
+    Matrices also accept `"fro"` or `:fro` for the Frobenius norm.
+
+# Returns
+
+The absolute value for numbers, or a real floating-point scalar for array
+inputs. Empty arrays return the floating-point zero corresponding to their
+element type.
 
 # Supported Values
 
-For vectors and general arrays:
+For vectors and general arrays, including custom `AbstractArray` implementations:
 
   - `p = 1`: sum of absolute values.
   - `p = 2`: Euclidean norm.
@@ -34,7 +41,16 @@ For matrices:
 
 For numbers, all supported `p` values return `abs(x)`.
 
-# Errors
+# Array Interface
+
+`norm` consumes the public `AbstractArray` interface; custom arrays must support
+their usual public Base operations, including iteration, `isempty`, `eltype`,
+and scalar indexing. Matrix inputs must additionally support `size(A)` and
+two-dimensional scalar indexing `A[i, j]`. No SimpleNorm-specific subtype or
+method extension is required: define the normal `AbstractArray` interface and
+call `norm` on the resulting value.
+
+# Throws
 
 Throws `ArgumentError` for unsupported negative vector orders, unsupported matrix
 orders, and unknown matrix norm strings or symbols. Matrix spectral norms
@@ -48,18 +64,19 @@ to reduce overflow and underflow in floating-point computations.
 
 # Examples
 
-```julia
-# Vector norms
-v = [3.0, 4.0]
-norm(v)       # 5.0
-norm(v, 1)    # 7.0
-norm(v, Inf)  # 4.0
+```jldoctest
+julia> using SimpleNorm
 
-# Matrix norms
-A = [1 2 3; 4 5 6]
-norm(A, 1)     # 9.0
-norm(A, Inf)   # 15.0
-norm(A, :fro)  # 9.539392014169456
+julia> SimpleNorm.norm([3.0, 4.0])
+5.0
+
+julia> SimpleNorm.norm([3.0, 4.0], 1)
+7.0
+
+julia> A = [1 2 3; 4 5 6];
+
+julia> SimpleNorm.norm(A, :fro)
+9.539392014169456
 ```
 """
 norm(x) = norm(x, 2)

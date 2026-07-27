@@ -14,13 +14,27 @@ Pkg.add("SimpleNorm")
 
 ## Usage
 
-```julia
-using SimpleNorm
+```jldoctest
+julia> using SimpleNorm
 
-norm([3.0, 4.0])        # 5.0  (Euclidean / 2-norm, the default)
-norm([3.0, 4.0], 1)     # 7.0  (1-norm)
-norm([3.0, 4.0], Inf)   # 4.0  (infinity norm)
+julia> norm([3.0, 4.0])
+5.0
+
+julia> norm([3.0, 4.0], 1)
+7.0
+
+julia> norm([3.0, 4.0], Inf)
+4.0
 ```
+
+## Array contract
+
+`norm` accepts ordinary arrays and custom `AbstractArray` implementations. A
+custom array must implement the public Base array operations used by its shape:
+iteration, `isempty`, `eltype`, and scalar indexing; matrices must additionally
+implement `size` and two-dimensional scalar indexing. There is no
+SimpleNorm-specific abstract type to subtype or method to extend. Define the
+normal Base array interface, then call `norm`.
 
 ## Supported norms
 

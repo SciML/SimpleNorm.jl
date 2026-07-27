@@ -1,4 +1,3 @@
-using SciMLTesting, SimpleNorm, Test
-using JET
+using SciMLTesting, SimpleNorm
 
-run_qa(SimpleNorm; explicit_imports = true)
+run_qa(SimpleNorm)
