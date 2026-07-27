@@ -141,3 +141,31 @@ end
     @test norm(Float32[3, 4]) ≈ 5.0
     @test norm(BigFloat[3, 4]) ≈ 5.0
 end
+
+@testset "Generic AbstractArray contract" begin
+    struct WrappedVector{T, V <: AbstractVector{T}} <: AbstractVector{T}
+        data::V
+    end
+
+    Base.IndexStyle(::Type{<:WrappedVector}) = IndexLinear()
+    Base.size(x::WrappedVector) = size(x.data)
+    Base.getindex(x::WrappedVector, i::Int) = x.data[i]
+
+    struct WrappedMatrix{T, M <: AbstractMatrix{T}} <: AbstractMatrix{T}
+        data::M
+    end
+
+    Base.size(x::WrappedMatrix) = size(x.data)
+    Base.axes(::WrappedMatrix) = (0:1, -1:0)
+    Base.getindex(x::WrappedMatrix, i::Int) = x.data[i]
+    Base.getindex(x::WrappedMatrix, i::Int, j::Int) = x.data[i + 1, j + 2]
+
+    v = WrappedVector([3.0, 4.0])
+    A = WrappedMatrix([1.0 2.0; 3.0 4.0])
+
+    @test norm(v) == 5.0
+    @test norm(v, 1) == 7.0
+    @test norm(A, 1) == 6.0
+    @test norm(A, Inf) == 7.0
+    @test norm(A, :fro) == sqrt(30.0)
+end
