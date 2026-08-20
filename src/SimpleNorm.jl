@@ -279,4 +279,20 @@ end
 # Type conversion for norm of numbers
 norm(x::Number, p::Real = 2) = abs(x)
 
+using PrecompileTools: @compile_workload, @setup_workload
+
+@setup_workload begin
+    @compile_workload begin
+        values = [3.0, 4.0, -2.0]
+        matrix = [1.0 2.0; 3.0 4.0]
+        norm(values)
+        norm(values, 1)
+        norm(values, Inf)
+        norm(values, 3)
+        norm(matrix, 1)
+        norm(matrix, :fro)
+        norm(3.0)
+    end
+end
+
 end # module
